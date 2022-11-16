@@ -28,7 +28,39 @@ Jeff's Page
     <a href="kubernetes.html">kubernetes</a><br>
 </div>
 
-<div id="center"> <h1 id="head"> dynamic host configuration protocol (dhcp) </h1> <a href="https://www.linkedin.com/in/jeffreysamuels22/">LinkedIn</a> | <a href="https://github.com/kippah2">GitHub</a> <p> This page is currently under construction! </p>  </div>
+<div id="center"> <h1 id="head"> dynamic host configuration protocol (dhcp) </h1> <a href="https://www.linkedin.com/in/jeffreysamuels22/">LinkedIn</a> | <a href="https://github.com/kippah2">GitHub</a> <p> 
+
+Dynamic Host Configuration Protocol is a Layer 4 protocol used by network devices to request a dynamic IP address from a DHCP server. It is built off the BOOTP transport protocol. A four step process abbreviated as DORA is used. <br> <br>
+
+There are 8 message types for DHCP but, DORA negotiation between device and server uses 1-5.
+<li> 
+  1. DHCPDiscover <br>
+  2. DHCPOffer <br>
+  3. DHCPRequest <br>
+  4. DHCPDecline <br>
+  5. DHCPAck <br>
+  6. DHCPNack <br>
+  7. DHCPRelease <br>
+  8. DHCPInform <br>
+</li>
+<br>
+IP negotiation should go like this: <br>
+<img src="https://qph.cf2.quoracdn.net/main-qimg-330e0ed6475e1bd5387803db16641690-pjlq"> <br>
+<p class="belowpic">Figure 1: DORA IP assignment process </p> <br>
+
+The client will send out a DHCPDiscover message over broadcast. It is sent over broadcast because the client does not know the location of the DHCP server on the network. You can see the source IP is 0.0.0.0 because the device has not been assigned one yet. <br> <br>
+
+The DHCP server responds with a DHCPOffer message. The source IP is the IP of the DHCP server, the destination MAC is the MAC address of the client (this is how switches are able to forward it correctly), and the destination IP is the IP address being offered. <br> <br>
+
+Once DHCPOffer is received by the client, it will respond with a DHCPRequest. This is essentially where the client is saying "can I keep this address?". This message is also a broadcast however and looks virtually the same as a DHCPDiscover message in terms of source and destination addresses. <br> <br>
+
+Once the server receives the DHCPRequest messgae, it will reply with either a DHCPDecline or DHCPAck message. If a DHCPAck is sent, then the IP has been acknowledged by the server as belonging to the client and they may now start using it. Once the DHCPAck has been sent, a lease timer begins. <br> <br>
+
+The lease timer determines how long the device may keep the IP address. Once the timer reaches halfway (aka T1), the client will send out another DHCPRequest message via unicast (meaning sent directly to the DHCP server) to the server, asking to keep it's IP. If the server responds with a DHCPAck, the lease timer resets. If it doesn't then the client will broadcast (meaning it will be sent out to all network devices, which may be a different DHCP server than last time) out another DHCPRequest message once the timer has reached 7/8ths completion (T2). Any DHCP server can respond to T2 with DHCPAck and extend the lease. If no DHCP server responds and the lease expires, the device must go through the whole DORA process again.
+
+
+
+ </p>  </div>
 
 
 </body>

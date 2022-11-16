@@ -25,7 +25,7 @@ Jeff's Page
   <li> cloud </li>
     <a href="cloud-init.html">cloud-init </a> <br>
     <a href="docker.html">docker</a><br>
-    <a href="kubernetes">kubernetes</a><br>
+    <a href="kubernetes.html">kubernetes</a><br>
 </div>
 
 
@@ -66,10 +66,10 @@ The root bridge is the focal point of the network. Decisions on which port to pu
 
 It is important to understand that not all switches in the network will have direct linkages to the root bridge. We know that all traffic is intended to reach the root bridge but, STP has to figure out which path the traffic should take. This is where port designation becomes relevant. In figure 3 there are 4 port designations shown. The most important two are "designated port" and "root port". <br> <br>
 
-Designated port.
+<li> Designated port. </li>
 For a given connection, the designated port is the port which will be receiving traffic. In Figure 3, this is all shown ports on the root bridge, as they receive traffic sent by the non-root bridges. If the designated port is not on the root bridge, it will forward traffic to the root port on that switch. <br> <br>
 
-Root port.
+<li>Root port. </li>
 The root port is the port which sends outbound traffic. Traffic should be forwarded in the direction of the root bridge. This means there will only be one root port per switch, which is the current best path towards the root bridge. <br> <br>
 
 The backup and alt ports from Figure 3 will be in blocking states but, can change to designated and root ports should the root bridge or a connection to it stops working, forcing STP to readjust its topology. For instance, if the connection between Switch 3 and the Root Bridge were severed, for traffic to be forwarded from Switch 3, it would need to first go to Switch 2, then from Switch 2 to Root Bridge. In this instance, the backup port on Switch 3 would become the root port, and its state will change from blocking to forwarding. When a switch detects a connection failure, it will inform other switches by sending out a Topology Change Notification (TCN) BPDU. More on TCN BPDUs later. <br> <br>
